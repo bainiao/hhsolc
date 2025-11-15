@@ -1,1 +1,14 @@
 npx harhat --init
+
+directories:
+    hardhat.config.ts: the main cofiguration file, which defines settings like Solidity compiler version,
+            network configurations, and plugins, and tasks your project uses.
+    contracts: Solidity contracts and test file by using .t.sol extension
+    test: typescript integration tests
+    ignition: deployment module that describes how your contracts should be deployed.
+    scripts: any custom scripts that antumate parts of your workflow. 
+            Scripts have full access to Hardhat's runtime and can use plugins,
+            connect to network, deploy contracts, and more.
+
+npx hardhat test
+npx hardhat test Solidity
