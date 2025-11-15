@@ -15,21 +15,36 @@ contract Ballot{
     address public chairPerson;
     mapping(address => Voter) public voters;
     Proposal[] public proposals;
-
-    constructor(bytes32[] memory proposalNames){
+    uint public votingStartTime;
+    uint public votingEndTime;
+    constructor(bytes32[] memory proposalNames,uint startTime, uint duration){
         chairPerson = msg.sender;
         for (uint i = 0; i < proposalNames.length; i++){
             proposals.push(Proposal({name:proposalNames[i],voteCount:0}));
         }
+        votingStartTime = startTime;
+        votingEndTime = startTime + duration;
     }
-    function giveRightToVote(address voter) external {
+    modifier beforeVoting(){
+        require(block.timestamp<votingStartTime, "vote has started.");
+        _;
+    }
+    modifier duringVoting(){
+        require(block.timestamp>=votingStartTime&&block.timestamp<votingEndTime, "vote is not active");
+        _;
+    }
+    modifier afterVoting(){
+        require(block.timestamp>votingEndTime, "vote is not end.");
+        _;
+    }
+    function giveRightToVote(address voter) external beforeVoting {
         require(msg.sender == chairPerson, "you don't have right to asign vote right.");
         require(voter != address(0), "invalid voter address");
         require(!voters[voter].voted, "you already voted.");
         require(voters[voter].weight == 0, "voter already have vote right.");
         voters[voter].weight = 1;
     }
-    function delegate(address to) external{
+    function delegate(address to) external duringVoting {
         Voter storage sender = voters[msg.sender];
         require(sender.weight > 0, "you don't have right to vote.");
         require(!sender.voted, "you already voted.");
@@ -48,7 +63,7 @@ contract Ballot{
             delegate_.weight += sender.weight;
         }
     }
-    function vote(uint proposal) external{
+    function vote(uint proposal) external duringVoting(){
         Voter storage sender = voters[msg.sender];
         require(!sender.voted, "you already voted.");
         require(sender.weight > 0, "you don't have right to vote.");
@@ -57,16 +72,33 @@ contract Ballot{
         sender.vote = proposal;
         proposals[proposal].voteCount += sender.weight;
     }
-    function winningProposal() public view returns (uint winningProposal_){
+    function winningProposal() public view afterVoting returns (uint[] memory){
         uint winningVoteCount = 0;
+        uint tieCount = 0;
         for (uint p = 0; p< proposals.length; p++){
             if (proposals[p].voteCount > winningVoteCount) {
-                winningProposal_ = p;
-                winningVoteCount = proposals[p].voteCount;
+                winningVoteCount = p;
+                tieCount = 0;
+            }else if (proposals[p].voteCount == winningVoteCount) {
+                tieCount += 1;
             }
         }
+        uint[] memory winner = new uint[](tieCount);
+        uint i=0;
+        for (uint p=0;p<proposals.length;p++){
+            if (proposals[p].voteCount == winningVoteCount){
+                winner[i] = p;
+                i++;
+            }
+        }
+        return winner;
     }
-    function winnerName() external view returns (bytes32){
-        return proposals[winningProposal()].name;
+    function winnerName() external view afterVoting returns (bytes32[] memory){
+        uint[] memory winner_ = winningProposal();
+        bytes32[] memory winner = new bytes32[](winner_.length);
+        for (uint i = 0; i < winner_.length; i++){
+            winner[i] = proposals[winner_[i]].name;
+        }
+        return winner;
     }
 }
