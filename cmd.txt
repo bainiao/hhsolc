@@ -12,3 +12,5 @@ directories:
 
 npx hardhat test
 npx hardhat test Solidity
+npx hardhat run scripts/send-op-tx.ts
+npx hardhat ignition deploy ignition/module/Counter.ts
