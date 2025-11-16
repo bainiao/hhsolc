@@ -8,7 +8,7 @@ contract BlindAuction {
     uint256 public revealTime;
     address public highestBidder;
     uint256 public highestBid;
-    sturct Bid {
+    struct Bid {
         bytes32 blindedBid;
         uint256 deposit;
         uint256 reveal;
@@ -33,14 +33,14 @@ contract BlindAuction {
         bidders[msg.sender].deposit += msg.value;
         bidders[msg.sender].blindedBid = _blindedBid;
     }
-    function reveal(uint256 _value) auctionEnded external {
-        Bid storarage bid = bidders[msg.sender];
-        require(bid.blindedBid == keccak256(abi.encodePacked(_value)), "Invalid bid");
-        require(bid.reveal > 0, "Already revealed");
+    function reveal(uint256 _value) external {
+        Bid storage bidder = bidders[msg.sender];
+        require(bidder.blindedBid == keccak256(abi.encodePacked(_value)), "Invalid bid");
+        require(bidder.reveal > 0, "Already revealed");
         if (block.timestamp >= revealTime) revert alreadyRevealed();
-        bid.reveal = _value;
-        if(bid.reveal > highestBid){
-            highestBid = bid.reveal;
+        bidder.reveal = _value;
+        if(bidder.reveal > highestBid){
+            highestBid = bidder.reveal;
             highestBidder = msg.sender;
         }
     }

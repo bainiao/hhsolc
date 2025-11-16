@@ -12,7 +12,7 @@ contract SimpleAuction {
     bool ended;
 
     event HighestBidIncreased(address bidder, uint amount);
-    event auctionEndTime(address winner, uint amount);
+    event auctionEnded(address winner, uint amount);
 
     error AuctionAlreadyEnded();
     error BidNotHighEnough(uint highestBid, uint bid);
@@ -22,7 +22,7 @@ contract SimpleAuction {
         auctionEndTime = block.timestamp + biddingTime;
         ended = false;
     }
-
+    
     function bid() external payable{
         if (block.timestamp > auctionEndTime) revert AuctionAlreadyEnded();
         uint256 totalBid = msg.value + pendingReturns[msg.sender];
@@ -40,7 +40,7 @@ contract SimpleAuction {
         uint amount = pendingReturns[msg.sender];
         pendingReturns[msg.sender] = 0;
         // payable(msg.sender).transfer(amount); // 2300 gas
-        success = payable(msg.sender).send(amount); // 2300 gas
+        bool success = payable(msg.sender).send(amount); // 2300 gas
         // (success, _) = payable(msg.sender).call{value: amount, gas: 5000}("");
         if (!success) {
             pendingReturns[msg.sender] = amount;
