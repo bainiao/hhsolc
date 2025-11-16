@@ -28,3 +28,6 @@ userid
 betPalyer: player1/player2
 amount
 betTime
+
+2. web3 销售平台：完全去中心化，架构在区块链上，自由交易，decentralized Amazon
+3. 针对特定业务开发的公链

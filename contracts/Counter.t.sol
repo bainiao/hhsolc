@@ -8,7 +8,8 @@ contract CounterTest is Test {
   Counter counter;
 
   function setUp() public {
-    counter = new Counter();
+    uint256[] memory arr = new uint256[](0);
+    counter = new Counter(arr);
   }
 
   function test_InitialValue() public view {

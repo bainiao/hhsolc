@@ -6,6 +6,12 @@ contract Counter {
 
   event Increment(uint by);
 
+  constructor(uint[] memory nums){
+    for (uint i = 0; i < nums.length; i++) {
+      x += nums[i];
+    }
+  }
+
   function inc() public {
     x++;
     emit Increment(1);

@@ -14,3 +14,10 @@ npx hardhat test
 npx hardhat test Solidity
 npx hardhat run scripts/send-op-tx.ts
 npx hardhat ignition deploy ignition/module/Counter.ts
+
+---剩gas
+1. 定义error(message), require和revert时，比直接字符串剩gas
+2. 减少storage访问次数，节省gas
+3. memory修饰数组，一次创建长度的数据，然后赋值，比多次push节省gas
+4. calldata参数比memory参数少gas
+5. view函数读取storage数据，不修改storage数据，不消耗gas
