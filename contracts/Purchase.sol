@@ -8,7 +8,7 @@ contract Purchase {
     uint256 public price;
     bytes32 public itemName;
     enum orderStatus {
-        null,
+        none,
         onSelling,
         sold,
         shipping,
@@ -19,7 +19,7 @@ contract Purchase {
     constructor(){}
     
     function sell(bytes32 _itemName, uint256 _price) payable public {
-        require(status == orderStatus.null, "Order already exists");
+        require(status == orderStatus.none, "Order already exists");
         require(_price > 0, "Price must be greater than 0");
         require(msg.value == 2*_price, "Deposit twice amount of price");
         seller = msg.sender;
@@ -30,7 +30,7 @@ contract Purchase {
     function sellerCancel() public {
         require(msg.sender == seller,"Only seller can cancel");
         require(status == orderStatus.onSelling, "Order status wrong");
-        status = orderStatus.null;
+        status = orderStatus.none;
         payable(seller).transfer(price); // refund
     }
     function buy() payable public {
