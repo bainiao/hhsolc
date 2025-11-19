@@ -33,7 +33,7 @@ contract BlindAuction {
         bidders[msg.sender].deposit += msg.value;
         bidders[msg.sender].blindedBid = _blindedBid;
     }
-    function reveal(uint256 _value) auctionEnded external {
+    function reveal(uint256 _value) external {
         Bid storage bidder = bidders[msg.sender];
         require(bidder.blindedBid == keccak256(abi.encodePacked(_value)), "Invalid bid");
         require(bidder.reveal > 0, "Already revealed");

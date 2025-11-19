@@ -22,7 +22,7 @@ contract SimpleAuction {
         auctionEndTime = block.timestamp + biddingTime;
         ended = false;
     }
-
+    
     function bid() external payable{
         if (block.timestamp > auctionEndTime) revert AuctionAlreadyEnded();
         uint256 totalBid = msg.value + pendingReturns[msg.sender];
