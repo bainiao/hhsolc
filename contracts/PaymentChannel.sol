@@ -35,17 +35,7 @@ contract PaymentChannel is Freezable{
         require(!usedNonce[_nonce],NonceUsed());
         _;
     }
-    event IssuedPayment(address receiver, uint256 amount, uint256 _expiration);
     constructor(){}
-    /// issue a payment to receiver
-    function issuePayment(address receiver, uint256 amount, uint256 _expiration) payable external returns (bytes32){
-        require(address(this).balance >= amount, "deposit is not enough");
-        bytes32 payMsg = keccak256(abi.encodePacked(address(this), receiver, amount, nonce));
-        nonce += 1;
-        expiration = block.timestamp + _expiration;
-        emit IssuedPayment(receiver, amount, expiration);
-        return payMsg;
-    }
     function claimPayment(uint256 amount, uint256 _nonce, bytes memory signature) noFrozen external{
         require(!usedNonce[_nonce], "nonce used");
         usedNonce[_nonce] = true;
