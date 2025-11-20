@@ -14,13 +14,13 @@ contract Frozeable{
     }
 }
 
-constrct SinglePaymentChannel is Frozeable{
+contract SinglePaymentChannel is Frozeable{
     address payable public sender;
     address payable public receiver;
     uint256 public expiration;
-    constructor(address payable receiver, uint256 duration){
+    constructor(address payable _receiver, uint256 duration){
         sender = payable(msg.sender);
-        receiver = receiver;
+        receiver = _receiver;
         expiration = block.timestamp + duration;
     }
     function close(uint256 amount, bytes memory signature) public notFrozen{
@@ -50,6 +50,6 @@ constrct SinglePaymentChannel is Frozeable{
             s := mload(add(signature, 64))
             v := byte(0, mload(add(signature, 96)))
         }
-        return (r, s, v)
+        return (r, s, v);
     }
 }
