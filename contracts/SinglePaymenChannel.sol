@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
+import "./Coin.sol";
 
 contract Frozeable{
     bool private _frozen;

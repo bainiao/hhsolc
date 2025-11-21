@@ -55,4 +55,9 @@ contract ReceivePays is Freezable {
     function prefixed(bytes32 hash) internal pure returns (bytes32){
         return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hash));
     }
+    function isContract(address account) internal view returns (bool) {
+        uint256 size;
+        assembly { size := extcodesize(account) }
+        return size > 0;
+    }
 }
