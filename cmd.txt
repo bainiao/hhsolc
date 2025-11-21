@@ -21,3 +21,4 @@ npx hardhat ignition deploy ignition/module/Counter.ts
 3. memory修饰数组，一次创建长度的数据，然后赋值，比多次push节省gas
 4. calldata参数比memory参数少gas
 5. view函数读取storage数据，不修改storage数据，不消耗gas
+6. 给合约内数组赋值，可以把数组参数在方法内创建一个memory参数接受数据，然后把这个数据赋值给合约内storage变量
