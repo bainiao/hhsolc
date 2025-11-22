@@ -29,3 +29,7 @@ npx hardhat ignition deploy ignition/module/Counter.ts
 11. require，revert，assert返回error()或error("message"), message小于bytes32省gas
 12. deleta 变量返gas
 13. 一些不重要的数据可以存在event中，很久以前的event查询慢
+
+--proficient
+1. uniswap https://github.com/bainiao/uniswapv3-code
+2. Loopring https://github.com/Loopring
