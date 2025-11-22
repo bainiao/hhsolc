@@ -14,7 +14,7 @@ contract IterableMapping{
         require(student != GUARD, "Invalid address");
         require(students[student] == address(0), "Student already exists");
         students[student] = students[GUARD];
-        students[GUARD] = students;
+        students[GUARD] = student;
         listSize++;
     }
     function remove(address preStudent, address student) public{

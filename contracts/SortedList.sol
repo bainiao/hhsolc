@@ -13,7 +13,7 @@ contract SortedList{
     function add(address student, uint8 score) external{
         require(students[student] == address(0), "Student already exists");
         address pre = GUARD;
-        while(students[pre] != GUARD && score[students[pre]] > score){
+        while(students[pre] != GUARD && scores[students[pre]] > score){
             pre = students[pre];
         }
         students[student] = students[pre];
