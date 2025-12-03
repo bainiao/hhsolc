@@ -29,7 +29,20 @@ npx hardhat ignition deploy ignition/module/Counter.ts
 11. require，revert，assert返回error()或error("message"), message小于bytes32省gas
 12. deleta 变量返gas
 13. 一些不重要的数据可以存在event中，很久以前的event查询慢
+14. interface(obj).function比contract(obj).function省500gas
 
 --proficient
 1. uniswap https://github.com/bainiao/uniswapv3-code
 2. Loopring https://github.com/Loopring
+
+--bytecode
+// contract creation code
+1. bytes memory bytecode = type(UniswapV2Pair).creationCode;
+// get chainid
+2. assembly {
+            chainId := chainid
+        }
+3. (bool success, bytes data) = address.call(abi.encodeWithSelector(select, to, value));
+        success = true/false
+        if true: data = returndata, abi.decode(data, (valuetype0, valuetype1))
+        if false: data = revert message

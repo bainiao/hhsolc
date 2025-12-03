@@ -35,5 +35,6 @@ contract IterableMapping{
             studentList[i] = current;
             current = students[current];
         }
+        return studentList;
     }
 }

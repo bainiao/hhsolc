@@ -26,7 +26,7 @@ contract Create2Factory {
         deployedAddress = address(child);
         return deployedAddress;
     }
-    function computeAddress(bytes32 _salt, string calldata _message) public view returns(address){
+    function computeAddress(bytes32 _salt) public view returns(address){    // , string calldata _message
         bytes memory bytecode = type(Child).creationCode;
         // bytes memory constructionArgs = abi.encodePacked(_message);
         // bytes memory fullBytecode = abi.encodePacked(bytecode, constructionArgs);
