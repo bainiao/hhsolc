@@ -27,7 +27,7 @@ npx hardhat ignition deploy ignition/module/Counter.ts
 9. 小类型的数组会打包存储，小于bytes32，会省gas
 10. 初始化不赋值，比赋默认值省gas
 11. require，revert，assert返回error()或error("message"), message小于bytes32省gas
-12. deleta 变量返gas
+12. delete 变量返gas
 13. 一些不重要的数据可以存在event中，很久以前的event查询慢
 14. interface(obj).function比contract(obj).function省500gas
 
