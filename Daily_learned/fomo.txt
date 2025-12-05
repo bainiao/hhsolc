@@ -1,0 +1,7 @@
+1. contract
+    1. erc20 token: exchange usdt and fomo.
+    1. create mining pool, mining machines, set interest levels
+    2. generate winner machine who wins 57% total consumption, winner acount gets 30%, 
+        others in the same pool share 10%, rest 3% is bured
+    3. 
+2. backend
