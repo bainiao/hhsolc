@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Fomo{
     struct Pool{
+        address poolOnwer;
         uint64 numberOfMachines;
         uint64 priceOfMachine;
         uint64 totalInMachines;  // total machines actually bought
@@ -33,6 +34,7 @@ contract Fomo{
     function createPool(uint64 pMachine) external returns(bool){
         require(pools[msg.sender].numberOfMachines == 0, PoolAlreadyExists());
         Pool memory pool = Pool({
+            poolOnwer: msg.sender,
             numberOfMachines: 0,
             priceOfMachine: pMachine,
             totalInMachines: 0,
@@ -71,7 +73,7 @@ contract Fomo{
         address[] memory pList = poolList;
         uint256[] memory ranges = new uint256[](pList.length);
         if (ranges.length == 0) return (address(0), 0);
-        Pool memory pool;
+        Pool storage pool;
         uint256 preInValue = 0;
         for (uint256 i=0; i < pList.length; i++){
             pool = pools[pList[i]];
@@ -79,6 +81,9 @@ contract Fomo{
             for(uint256 j=0; j<pool.buyers.length; j++){
                 if (!pool.buyers[j].buy){
                     pool.buyers[j].inMachines = 0;
+                    pool.buyers[j] = pool.buyers[pool.buyers.length - 1];
+                    pool.buyers.pop();
+                    j--;
                     continue;
                 }
                 uint256 values = IERC20(fomoTokenAddress).balanceOf(pool.buyers[j].buyerAddress);
@@ -139,12 +144,22 @@ contract Fomo{
         emit GenerateWinningPool(winningPool, winningNum, totalReward);
         return (winningPool, totalReward);
     }
+    error NoRewardToDistribute();
     function distributeRewards(address winningPool, uint256 totalReward) internal {
+        require(totalReward > 0, NoRewardToDistribute());
         Pool memory pool = pools[winningPool];
+        bool suc = IERC20(fomoTokenAddress).transferFrom(
+            host,
+            pool.poolOnwer,
+            totalReward / 1000); // 0.1% to pool owner
+        if (!suc){
+            emit RefundFailed(pool.poolOnwer, totalReward / 1000);
+        }
+        totalReward = totalReward * 999 / 1000; // 99.9% to buyers
         for (uint256 i=0; i < pool.buyers.length; i++){
             if (pool.buyers[i].inMachines == 0) continue;
             uint256 buyerReward = uint256(pool.buyers[i].inMachines) * totalReward / pool.totalInMachines;
-            bool suc = IERC20(fomoTokenAddress).transfer(pool.buyers[i].buyerAddress, buyerReward);
+            suc = IERC20(fomoTokenAddress).transfer(pool.buyers[i].buyerAddress, buyerReward);
             if (!suc){
                 emit RefundFailed(pool.buyers[i].buyerAddress, buyerReward);
             }

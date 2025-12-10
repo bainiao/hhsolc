@@ -37,3 +37,5 @@ betTime
     和一般等价物换算，用户可以存入一种代币，只有这种代币被兑换出去，才会收益手续费。代币的价格与一般等价物成反比，一般等价物数量恒定，
     代币数量越多，价格月底；代币数量越少价格越高。
     价格压缩机制，价格波动范围在正负20%，不会超过这个范围，这个范围内就已经有套利机会了。
+6. traceability system: public service
+7. moment of history: record, social, support, 
