@@ -11,8 +11,11 @@ contract ReentrantTest is Test{
     function setUp() public{
         reen = new Reentrant();
     }
+    // function getData() public{
+    // }
 
     function test_Claim() public{
+        vm.expectRevert();
         reen.claim();
     }
     receive() external payable{

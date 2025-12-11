@@ -8,3 +8,6 @@
 8. memory：免费（≤128 字节）或极低扩容费（~50 gas），再次读写免费，
 9. 减少扩容次数，一次声明足够大空间，避免使用超大内存数据，扩容收费平方级收费，超大数据用calldata或storage
 10. 事件参数，数据类型越小gas费越少
+11. graph collects events on block chain, only event that has sub graph will be collected.
+    all the event data collected by graph is public. 
+12. chainlink provides oracle, cross chain, calculation off-chain, communication between chains, data services, smart contract trigger.
