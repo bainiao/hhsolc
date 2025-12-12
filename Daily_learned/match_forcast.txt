@@ -1,0 +1,25 @@
+1. start a match forecast.
+	1). deposit 100 tokens to be a host. (influencers, or anyone)
+	2). declare a match: match type(electrical game, ping pang, running), match name, match time, location, players(team or person, two or many - array), website (living show)
+	3). many people can declare the same match
+	4). other people join match forecast with u, to predict which team or person win the match. then people who are right about match result wins u from those who are wrong.
+	5) match finish: hosts record result on contract. there is a chanllenge period during which participants who bet wrong challenge the result.
+	6). the final result is decided by official websites, results from host. Considering results as whole, in case any error souces exist. official websites account for 50% of the weight, hosts account for another 50%. if 20% of the results are inconsistent, coming into challenging stage. 
+	5). after chanllenge period: right people withdraw their bet, and share u from wrong.
+	6). if there are some participants who lose and challenge the result. first, chanllengers need to deposit some u, normally 10 percent of their stake, 1 at least, as punishment for bad intent.  if number of challengers is bigger than 50% total number of loser and total deposit reaches 5 percent of total losing u, the result will be judged by administrator. if challengers successd, they win all u back; if they failed, then lose all deposit and deposit fee of challenging next time raise to 20%, each failed challenging raises challenging feeing by 10%.
+
+
+2. host of match:
+	1). many hosts can host a match
+	2). host's profit comes from participants who bet on host's setting up match and lose, 2% of total lose. anther 2% goes to administrator for running the whole program and gas cost.
+	3). there ares two ratings on host: first, right result set rate, 100% should be maintained; second, how long host takes to setup result after match. the earlier the better. Since host setup result, then winners get u back.
+	4). higher rating attracts more participants bet on his/her matches, as a result, host get more reward.
+	5). if host setup wrong result, he/she lose deposit, wouldn't earn 2% losing amount, right rating decreased.
+	6). if host does not setup result for some reasons, the result would be setup automatically 10 minutes after result made. host can declare follow main result, but lose timing rating.
+	7). host need to take identity anthentication.
+
+
+
+3. match players
+	1) two: win versus lose. 
+	2) one versus others: score set: ..., 3:1, 2:1, 1:1, 0:0 1:2, 1:3, ...
