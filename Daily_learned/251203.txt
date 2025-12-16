@@ -5,7 +5,7 @@
 5. selector = Keccak256(bytes("transfer(address, uint256)", 0x2231231, 100))
     address.call(abi.encodeWithSelector(selector))
 6. function中有4个bytes32免费memory空间，超过一个至多50，
-7. storage：冷读 2100 gas / 冷写 20000 gas，热读 100 gas / 热写 100 gas
+7. storage：冷读 2100 gas / 冷写 20000 gas，热读 100 gas / 热写 2100 gas
 8. memory：免费（≤128 字节）或极低扩容费（~50 gas），再次读写免费，
 9. 减少扩容次数，一次声明足够大空间，避免使用超大内存数据，扩容收费平方级收费，超大数据用calldata或storage
 10. 事件参数，数据类型越小gas费越少
@@ -18,4 +18,27 @@
     可变数组uint256：变量存储槽，地址：keccak256(0), +1, +2. 即使uint8，那么[0],[1],[2]也是各占一个槽位。
 15. 代理合约，因逻辑升级，实现合约升级，添加的变量。代理合约delegatecall实现合约时，仍可以正常运行，因为实现合约定义了变量槽的位置，
     在代理合约中对应的槽位置就是存对应变量的值。实现合约升级时，要保证之前声明的变量顺序和值都保持一致，这样之前的值在原来槽的位置不会受影响，
-16. 
+16. function中memory变量缓存storage，当多次用到storage变量时
+17. 把多个小类型变量打包到一个槽内，手动打包优于自动打包
+    手动：uint80 x, uint80 y
+        packedVariables = uint160(x) << 80 | uint160(y);
+    自动：uint80 x, uint80 y
+        var1 = x;
+        var2 = y;
+18. 结构体的字段时顺序保存，同样打包方式，uint64和address可以打包到一个slot
+19. 保持字符串小于32bytes，小于32bytes，字符串长度和内容同时存在槽内, 低位存长度*2，高位存数据；
+    "hello"
+    0x48656c6c6f00000000000000000000000000000000000000000000000000000a
+    长于32bytes，长度存在槽内，低位存长度*2+1，内容存在keccak256(slot address)
+    一个英文字符占32位，2个16位，一个汉字占3个16位，48位
+    0x000000000000000000000000000000000000000000000000000000000000005d
+20. use const
+21. use mapping instead of array. when use array index to get element, solidity would check if index exceed boundary of array
+22. openzeppelin中Array.sol的unsafeAccess函数直接访问数据任意索引，但是要保证索引不越界
+23. use bit map intead of many of bool values
+24. use sstore2 or sstore3 to store a lot of data
+25. sometimes use storage to refer storage struct data, if we just need one field of struct.
+        User memory _user = users[_id];
+        uint256 lastSeen = block.timestamp - _user.lastSeen;
+        return lastSeen;
+26. 
