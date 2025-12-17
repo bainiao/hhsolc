@@ -92,4 +92,34 @@
         存储槽从0开始，所以减一
 38. calldata address中如果前面含有多个0，省gas。因此避免使用负数参数，因为很小的负数calldata前面都是非零
 39. calldata比memory省gas
-40. 
+40. 比大小优化
+    z = x > y ? x : y;
+    assembly {
+        z := xor(x, mul(xor(x, y), gt(y, x)))
+    }
+41. sub(caller, sload(owner.slot))优于eq(caller, sload(owner.slot))
+42. 返回值命名比匿名省gas：returns (bool flag) { flag = true;}
+43. ++i优于i++，i++是先返回值，在自增1，这样产生两个值，++i自增后返回
+44. 优化后的：
+    for (uint256 i; i < limit; ) {
+    // inside the loop
+    unchecked {
+        ++i;
+    }
+    还能优化：
+    if (times == 0) {
+        return;
+    }
+    uint256 i;
+    do {
+        unchecked {
+            ++i;
+        }
+    } while (i < times);
+}
+45. 当使用较小的整数时，EVM计算的时候，会自动将其转换为 uint256。这个转换过程会增加额外的 gas 成本，频繁计算的变量最好从一开始就使用 uint256
+46. 短路布尔运算，||前面true，&&前面false
+47. 不要public变量，因为public会自动生成一个getter() public
+48. 优化器runs：较小的runs部署成本小；较大的runs部署成本高，优化运行时，代码执行成本低。
+49. 位移法比乘除法省gas
+50. 
