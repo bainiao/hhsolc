@@ -73,9 +73,9 @@ contract Ballot{
         proposals[proposal].voteCount += sender.weight;
     }
     function winningProposal() public view afterVoting returns (uint[] memory){
-        uint winningVoteCount = 0;
-        uint tieCount = 0;
-        for (uint p = 0; p< proposals.length; p++){
+        uint winningVoteCount;
+        uint tieCount;
+        for (uint p; p< proposals.length; p++){
             if (proposals[p].voteCount > winningVoteCount) {
                 winningVoteCount = p;
                 tieCount = 0;
@@ -84,11 +84,16 @@ contract Ballot{
             }
         }
         uint[] memory winner = new uint[](tieCount);
-        uint i=0;
-        for (uint p=0;p<proposals.length;p++){
+        uint i;
+        for (uint p;p<proposals.length;){
             if (proposals[p].voteCount == winningVoteCount){
                 winner[i] = p;
-                i++;
+                unchecked{
+                    ++i;
+                }
+            }
+            unchecked {
+                ++p;
             }
         }
         return winner;
@@ -96,8 +101,11 @@ contract Ballot{
     function winnerName() external view afterVoting returns (bytes32[] memory){
         uint[] memory winner_ = winningProposal();
         bytes32[] memory winner = new bytes32[](winner_.length);
-        for (uint i = 0; i < winner_.length; i++){
+        for (uint i; i < winner_.length; ){
             winner[i] = proposals[winner_[i]].name;
+            unchecked {
+                ++i;
+            }
         }
         return winner;
     }

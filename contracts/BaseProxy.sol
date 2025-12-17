@@ -14,7 +14,7 @@ contract Implementation{
 }
 
 contract BaseProxy{
-    address public implementation;
+    address private implementation;
     constructor(address _implementation){
         implementation = _implementation;
     }
@@ -30,7 +30,6 @@ contract BaseProxy{
             calldatacopy(0,0,calldatasize())
             let suc := delegatecall(gas(), target, 0, calldatasize(), 0, 0)
             returndatacopy(0, 0, returndatasize())
-            let d := returndatasize()
             switch suc
             case 0{
                 revert(0, returndatasize())

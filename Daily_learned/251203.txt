@@ -1,5 +1,5 @@
 1, 函数参数的关键字声明，引用类型需标记calldata，memory，值类型按值传递memory，引用类型有bytes，string，mapping，struct
-2. external 引用类型默认calldata，public，private，internal必须显式声明
+2. external 引用类型默认calldata; public，private，internal必须显式声明
 3. internal函数的参数用storage，直接改变原始值
 4. calldata（只读）仅限external，memory（可读写）所有，storage（修改原数据）限制internal，private，
 5. selector = Keccak256(bytes("transfer(address, uint256)", 0x2231231, 100))
@@ -102,9 +102,10 @@
 43. ++i优于i++，i++是先返回值，在自增1，这样产生两个值，++i自增后返回
 44. 优化后的：
     for (uint256 i; i < limit; ) {
-    // inside the loop
-    unchecked {
-        ++i;
+        // inside the loop
+        unchecked {
+            ++i;
+        }
     }
     还能优化：
     if (times == 0) {

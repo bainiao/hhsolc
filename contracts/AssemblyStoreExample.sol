@@ -27,8 +27,7 @@ contract AssemblyStoreExample{
             sstore(slot, amount)
         }
     }
-    function getBalance(address user) external view returns(uint256){
-        uint256 bal;
+    function getBalance(address user) external view returns(uint256 bal){
         assembly {
             //计算mapping的存储槽位置
             mstore(0x0, user)
@@ -36,7 +35,6 @@ contract AssemblyStoreExample{
             let slot := keccak256(0x0, 0x40)
             bal := sload(slot)
         }
-        return bal;
     }
     uint128 private data1;  // high 128 bits
     uint128 private data2;  // low 128 bits
@@ -46,14 +44,11 @@ contract AssemblyStoreExample{
             sstore(data1.slot, packedData)
         }
     }
-    function getData() external view returns(uint128, uint128){
-        uint128 d1;
-        uint128 d2;
+    function getData() external view returns(uint128 d1, uint128 d2){
         assembly {
             let packedData := sload(data1.slot)
             d1 := and(packedData, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
             d2 := shr(128, packedData)
         }
-        return (d1, d2);
     }
 }
