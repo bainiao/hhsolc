@@ -34,6 +34,7 @@ npx hardhat ignition deploy ignition/module/Counter.ts
 --proficient
 1. uniswap https://github.com/bainiao/uniswapv3-code
 2. Loopring https://github.com/Loopring
+3. Aave
 
 --bytecode
 // contract creation code
@@ -46,3 +47,38 @@ npx hardhat ignition deploy ignition/module/Counter.ts
         success = true/false
         if true: data = returndata, abi.decode(data, (valuetype0, valuetype1))
         if false: data = revert message
+4. coursera public class
+5. polygon，Arbitrum layer2
+6. infura， the graph.
+7. 测试安全：mythril，slither。扫合约漏洞，还有开源靶场
+8. web3 job website:
+        1. cryptojobslist
+        2. web3.career
+        3. cryptocurrencyjobs.co/newsletter
+        4. wellfound.com/jobs
+        5. remote3.co
+        6. defi.jobs
+        7. arc.dev/remote-jobs
+        8. stackoverflow.com/jobs/companies
+        9. wearedevelopers.com/en/jobs
+        10. flexjobs.com/remote-job/web-developer
+        11. remoteok.com
+        12. remotive.com
+        13. jobs.smartrecruiters.com
+        14. jobs.workable.com
+        15. nodeflair.com
+        16. nofluffjobs.com
+        17. justjoin.it
+        18. remote.com/jobs
+        19. dynamitejobs.com/remote-jobs
+        20. himalayas.app/jobs/developer
+        21. seek.com.au/web-developer-remote-jobs
+        22. getonbrd.com
+        23. poststatus.com/jobs
+        24. jobs.wordpress.network
+        25. larajobs.com
+        26. vuejobs.com
+        27. sveltejobs.com
+        28. workwise.io/jobs/web-developer/remote
+        29. 4dayweek.io
+        30. linkin.com
