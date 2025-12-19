@@ -19,12 +19,14 @@ npx hardhat ignition deploy ignition/module/Counter.ts
 1. 定义error(message), require和revert时，比直接字符串剩gas
 2. 减少storage访问次数，节省gas
 3. memory修饰数组，一次创建长度的数据，然后赋值，比多次push节省gas
-4. calldata参数比memory参数少gas
-5. view函数读取storage数据，不修改storage数据，不消耗gas
+4. calldata参数比memory参数少gas，值类型不允许用calldata，默认存在stack中，引用类型string，数组，结构体；mapping
 6. use uncheck on some calculate, 0.8.0+ version check overflow/underflow and revert, but it cost more gas
 7. 给合约内数组赋值，可以把数组参数在方法内创建一个memory参数接受数据，然后把这个数据赋值给合约内storage变量
 8. 数组比切片省gas
-9. 小类型的数组会打包存储，小于bytes32，会省gas
+9. 小类型的数组会打包存储，小于bytes32，会省gas; 动态数据有元数据槽，存动态数组长度，数据存在keccak(元数据草地址)，紧凑打包槽
+        存储端字节序列(32以内)，优先用bytes;
+        存储大量小整数，用32的倍数，减少槽浪费
+        固定长度比动态长度数组省元数据槽
 10. 初始化不赋值，比赋默认值省gas
 11. require，revert，assert返回error()或error("message"), message小于bytes32省gas
 
