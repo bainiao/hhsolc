@@ -119,10 +119,10 @@
             ++i;
         }
     } while (i < times);
-}
 45. 当使用较小的整数时，EVM计算的时候，会自动将其转换为 uint256。这个转换过程会增加额外的 gas 成本，频繁计算的变量最好从一开始就使用 uint256
 46. 短路布尔运算，||前面true，&&前面false
 47. 不要public变量，因为public会自动生成一个getter() public
 48. 优化器runs：较小的runs部署成本小；较大的runs部署成本高，优化运行时，代码执行成本低。
 49. 位移法比乘除法省gas
-50. 
+50. slither
+51. 访问struct variable，using storage instead of memory saves gas.
