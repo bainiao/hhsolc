@@ -1,0 +1,11 @@
+1. remapping
+    format: context/: prefix/ = target/
+    scope of affect: only the current file
+    remapping to npm modules: ozc/ = node_modules/@openzeppelin/contracts
+        import { ERC20 } from "ozc/contracts/token/ERC20/ERC20.sol";
+2. hardhat.config.ts
+    optimizer: defines the number of runs, which affects how the compiler balances between deployment cost and execution cost
+    viaIR: 中间层编译开关”—— 开启后，编译器会先把 Solidity 代码转换为Yul 中间语言（一种更接近 EVM 底层的低级语言），再从 Yul 编译为字节码。
+        这个过程增加了编译步骤，所以会 “减慢编译速度”；但 Yul 的抽象层级更低，编译器能对代码做更精细的优化（比如更高效的指令合并、冗余逻辑删除），
+        因此能生成更精简、Gas 消耗更低的字节码（即 “更强大的优化”）
+3. npx hardhat test --build-profile production

@@ -39,3 +39,4 @@ betTime
     价格压缩机制，价格波动范围在正负20%，不会超过这个范围，这个范围内就已经有套利机会了。
 6. traceability system: public service
 7. moment of history: record, social, support, 
+8. web3 projects selling platform. 

@@ -126,3 +126,6 @@
 49. 位移法比乘除法省gas
 50. slither
 51. 访问struct variable，using storage instead of memory saves gas.
+52. uint256 t = number; number = t + x;优于 5656
+    number = number + x; 优于 5688
+    number += x; 5700
