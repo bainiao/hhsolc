@@ -1,0 +1,55 @@
+1. 消息中间件，消息队列，生产者消费者模式。offset确定处理位置。
+2. topic：消息的类别，一个topic可以有多个生产者和消费者。多个主题通道
+3. partition：分区，一个topic可以有多个分区，分区可以分布在不同的broker上，每个分区可以看作是一个有序的队列，每个消息在队列中都有一个唯一的编号，称为offset。
+4. broker：消息队列服务器，负责存储消息，转发消息。
+5. producer：消息生产者，负责产生消息并发送给broker。
+6. consumer：消息消费者，负责从broker获取消息并消费。
+7. install kafka: brew install kafka
+8. brew services start kafka
+9. offset explorer: https://www.kafkatool.com/
+10. 创建kafka项目：
+    1. mkdir kafka-js-demo
+    2. cd kafka-js-demo
+    3. npm init -y
+    4. npm instal kafka-js
+    5. code . -r
+    6. producer.js:
+        const { Kafka } = require('kafkajs');
+        const kafka = new Kafka({
+            clientId: 'my-app',
+            brokers: ['localhost:9092']
+        })
+        const producer = kafka.producer();
+        async function run() {
+            await producer.connect();
+            await producer.send({
+                topic: 'test',
+                messages: [
+                    { value: 'Hello KafkaJS user!' },
+                ],
+            });
+            await producer.disconnect();
+        }
+        run().catch(console.error);
+    7. consumer.js:
+        const { Kafka } = require('kafkajs');
+        const kafka = new Kafka({
+            clientId: 'my-app',
+            brokers: ['localhost:9092']
+        })
+        const consumer = kafka.consumer({groupId: 'my-group'});
+        async function run() { 
+            await consumer.connect();
+            await consumer.subscribe({ topic: 'test', fromBeginning: true });
+            await consumer.run({
+                eachMessage: async ({ topic, partition, message }) => {
+                    console.log({
+                        value: message.value.toString(),
+                    });
+                },
+            });
+        }
+        run().catch(console.error);
+
+11. kafka作为削峰平谷服务，削峰：将请求缓存到消息队列中，消费者根据自身处理能力从队列中获取请求进行处理，从而避免请求的瞬时高峰导致系统崩溃。
+12. 系统中有部分服务api用到，并不是所有api都用，用到kafka服务，要写consumer，异步服务，不会当前会话返回结果，需要前段轮询机制查询结果
