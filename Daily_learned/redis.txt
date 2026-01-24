@@ -1,0 +1,164 @@
+1. 基本概念
+    1. remote dictionary server
+    2. 内存数据库
+    3. key-value存储系统
+    4. 数据类型：字符串string、哈希hash、列表list、集合set、有序集合sorted set
+        消息队列stream, 地理位置geospatial, hyperLoglog, 位图bitmap, 位域bitfield
+    5. 使用方式：command line interface(CLI), Application programming interface(API), Graphic user interface(GUI)(GUI工具：redis desktop manager)
+    6. 数据持久化：RDB和AOF
+    7. 高性能：基于内存操作，单线程模型
+    8. 高可用：主从复制、哨兵模式、集群模式
+2. 安装
+    1. WSL，linux，redis
+    2. docker，redis
+    3. windows，redis
+3. 使用方式：command line interface(CLI)
+    1. redis-server.exe     // server
+    2. redis-cli.exe        // calldata（只读）仅限external，memory（可读写）所有，storage（修改原数据）限制internal，private，
+    3. set/get key values
+4. redis commands
+    1. keys *    // 查看所有key
+    2. type key  // 查看key类型
+    3. del key   // 删除key
+    4. expire key seconds  // 设置key过期时间
+    5. ttl key   // 查看key剩余过期时间
+    6. DEL key [key ...]  // 删除一个或多个 key
+    7. EXISTS key [key ...]  // 检查 key 是否存在
+    8. keys na*  // 查看所有以na开头的key
+    9. quit
+    10. redis-cli.exe --raw  // 显示中文
+    11. setex name 5 zhangsan  // 设置key和过期时间
+    12. setnx name zhangsan  // 如果key不存在则设置key
+    13. mset name1 zhangsan name2 lisi  // 批量设置key
+    14. mget name1 name2  // 批量获取key
+    15. msetnx name1 zhangsan name2 lisi  // 批量设置key，如果key不存在则设置key
+    16. incr age  // 增加key的值
+    17. decr age  // 减少key的值
+    18. incrby age 10  // 增加key的值
+    19. decrby age 10  // 减少key的值
+    20. append name zhangsan  // 在key的值后面追加
+    21. strlen name  // 获取key的值的长度
+    22. getrange name 0 3  // 获取key的值的指定范围
+    23. setrange name 0 lisi  // 设置key的值的指定范围
+    24. setex name 5 zhangsan  // 设置key和过期时间
+5. list
+    1. lpush list1 1 2 3 4 5  // 从左边插入
+    2. rpush list1 1 2 3 4 5  // 从右边插入
+    3. lrange list1 0 -1  // 获取list1的所有值
+    4. lpop list1  // 从左边弹出
+    5. rpop list1  // 从右边弹出
+    6. lindex list1 0  // 获取list1的指定索引的值
+    7. llen list1  // 获取list1的长度
+    8. lrem list1 2 1  // 删除list1中值为1的2个元素
+    9. ltrim list1 0 2  // 截取list1的指定范围
+    10. rpoplpush list1 list2  // 将list1的右边弹出并插入到list2的左边
+6. set
+    1. sadd set1 1 2 3 4 5  // 添加元素
+    2. smembers set1  // 获取所有元素
+    3. sismember set1 1  // 判断元素是否存在
+    4. scard set1  // 获取元素个数
+    5. srem set1 1  // 删除元素
+    6. srandmember set1  // 随机获取元素
+    7. spop set1  // 随机删除元素
+    8. smove set1 set2 1  // 将元素从set1移动到set2
+7. sortedset
+    1. zadd zset1 1 1 2 2 3 3 4 4 5 5  // 添加元素
+    2. zrange zset1 0 -1  // 获取所有元素 withscores
+    3. zrangebyscore zset1 0 3  // 获取指定分数范围内的元素
+    4. zscore zset1 1  // 获取元素的分数
+    5. zrank zset1 1  // 获取元素的排名
+    6. zrevrank zset1 1  // 获取元素的倒序排名
+    7. zrem zset1 1  // 删除元素
+8. hash
+    1. hset user1 name zhangsan age 18  // 添加元素
+    2. hget user1 name  // 获取元素
+    3. hgetall user1  // 获取所有元素
+    4. hdel user1 name  // 删除元素
+    5. hlen user1  // 获取元素个数
+    6. hexists user1 name  // 判断元素是否存在
+    7. hkeys user1  // 获取所有key
+    8. hvals user1  // 获取所有value
+    9. hincrby user1 age 1  // 增加元素的值
+    10. hgetall user1  // 获取所有元素
+9. publish - subscribe
+    1. subscribe channel1  // 订阅频道
+    2. publish channel1 hello  // 发布消息
+    3. unsubscribe channel1  // 取消订阅频道
+10. 消息队列stream
+    1. xadd mystream * name zhangsan age 18  // 添加消息
+    2. xread mystream 0-0  // 获取消息
+    3. xreadgroup mystream mystream-group mystream-consumer 0-0  // 获取消息
+    4. xdel mystream 1-0  // 删除消息
+    5. xtrim mystream maxLen 0  // 删除所有消息
+    6. xinfo mystream  // 获取消息信息
+    7. xrange mystream - +  // 获取所有消息
+    8. xadd mystream 1-0 name zhangsan age 18  // 添加消息, 1时间戳，0序列号
+    9. xread count 2 block 1000 streams mystream 0  // 获取消息，count获取数量，block阻塞时间，streams获取的stream, 0表示从0读取
+    10. xread count 2 block 1000 streams mystream $ // $获取从现在开始之后的数据
+    11. xgroup create mystream-group mystream-consumer 0-0  // 创建消费组
+    12. xinfo groups mystream-group  // 获取消费组信息
+    13. xgroup createcomsumer mystream-group mystream-consumer  // 创建组消费者
+    14. xreadgroup group mystream-group mystream-consumer count 2 block 1000 streams mystream 0  // 获取消息
+11. geospatial
+    1. geoadd city 116.404 39.915 beijing 117.190 39.125 shanghai 121.473 31.230 shenzhen 106.504 29.533 chongqing  // 添加地理位置
+    2. geodist city beijing shanghai km  // 获取两个地理位置的距离
+    3. geopos city beijing  // 获取地理位置的经纬度
+    4. georadius city 116.404 39.915 1000 km  // 获取指定范围内的地理位置
+    5. georadiusbymember city beijing 1000 km  // 获取指定地理位置范围内的地理位置
+    6. geosearch city frommember shanghai byradius 300 km  // 获取指定地理位置范围内的地理位置
+    7. geosearch city frommember shanghai byradius 300 km withcoord withdist  // 获取指定地理位置范围内的地理位置，并返回经纬度和距离
+    8. geohash city beijing  // 获取地理位置的geohash值
+12. hyperloglog     // 基数统计
+    1. pfadd myset 1 2 3 4 5  // 添加元素
+    2. pfcount myset  // 获取元素个数
+    3. pfmerge myset1 myset2 myset3  // 合并元素
+13. bitmap          // 位图, 字符串类型扩展，string模拟数组，二进制存储，位运算
+    1. setbit mybit 0 1  // 设置bit
+    2. getbit mybit 0  // 获取bit
+    3. set mybit "\xF0"  // 设置字符串11110000
+    4. bitcount mybit  // 获取bit的个数
+    5. bitop and mybit1 mybit2 mybit3  // 位运算
+    6. bitpos mybit 1  // 获取bit的位置, 0表示从左到右第一个1的位置
+14. bitfield         // 位域，把很多小的整数存储到较大的位图中
+    1. bitfield player:1 set u8 #0 100 set u8 #1 200 set u8 #2 300 set u8 #3 400  // 设置位域
+    2. bitfield player:1 get u8 #0  // 获取位域
+    3. bitfield player:1 incrby u8 #0 10  // 增加位域
+15. 事务, 一连串的命令，允许有失败命令，不影响成功的命令
+    1. multi  // 开启事务
+    2. set name zhangsan  // 设置name
+    3. set age 18  // 设置age
+    4. exec  // 执行事务
+    5. discard  // 放弃事务
+16. redis持久化
+    1. RDB, 保存快照，在指定的时间间隔内，将内存中的数据写入到磁盘，生成一个.rdb文件，恢复时直接加载.rdb文件
+    2. AOF, 每次修改数据时，将命令写入到.aof文件，恢复时直接加载.aof文件
+    3. RDB和AOF可以同时使用，RDB作为备份，AOF作为恢复
+    4. RDB和AOF的配置文件在redis.conf中
+    5. RDB的配置文件在redis.conf中
+    6. vi redis.conf
+    7. /save 3000 1  // 3000秒内修改1次，保存一次
+    8. /appendonly yes  // 开启AOF
+    9. /appendfsync everysec  // 每秒同步一次
+    10. ls  // 查看当前目录下的文件
+    11. ls -ltr  // 查看当前目录下的文件，按时间排序
+    12. xxd dump.rdb  // 查看rdb文件内容
+    13. crontab -e  // 编辑定时任务
+    14. bgsave  // 后台保存执行rdb保存,
+17. redis主从复制
+    1. 主从复制，将主节点的数据复制到从节点，从节点可以读数据，不能写数据
+    2. role // 查看当前节点角色
+    3. slaveof/replicaof 127.0.0.1 6379  // 将当前节点设置为从节点
+    4. slaveof no one  // 将当前节点设置为主节点
+    5. info replication  // 查看主从复制信息
+    6. redis-cli -p 6380  // 连接从节点
+    7. cp redis.conf redis.6380.conf  // 复制redis.conf文件
+    8. code redis.6380.conf  // 编辑redis.6380.conf文件, 修改端口号，pid文件名，dbfilename，添加主节点replicaof ip port
+    9. redis-server redis.6380.conf  // 启动从节点
+    10. redis-cli -p 6380  // 连接从节点
+    11. info replication  // 查看主从复制信息
+18. redis哨兵sentinel
+    1. 哨兵，监控主节点的健康状态，当主节点发生故障时，自动将从节点提升为主节点
+    2. vim sentinel.conf  // 编辑sentinel.conf文件, 修改端口号，pid文件名，添加主节点sentinel monitor mymaster 127.0.0.1 6379 1
+    3. sentinel monitor master 127.0.0.1 6379 1  // 添加主节点, 1表示需要多少个哨兵同意才能进行故障转移
+    4. redis-sentinel sentinel.conf  // 启动哨兵
+    5. 多个哨兵节点确保高可用，多个哨兵节点选举一个领导者，

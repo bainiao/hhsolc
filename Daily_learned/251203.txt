@@ -129,3 +129,5 @@
 52. uint256 t = number; number = t + x;优于 5656
     number = number + x; 优于 5688
     number += x; 5700
+53. 当发送一笔交易，pending状态，后续发起的交易都会等待这笔交易完成，导致交易阻塞。需要重新按这笔交易的nonce发起新交易，
+    gasPriorityFee比这笔交易高，让区块打包这个nonce的交易，后续被阻塞交易才会继续进行，

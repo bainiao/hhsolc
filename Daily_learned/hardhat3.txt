@@ -9,3 +9,41 @@
         这个过程增加了编译步骤，所以会 “减慢编译速度”；但 Yul 的抽象层级更低，编译器能对代码做更精细的优化（比如更高效的指令合并、冗余逻辑删除），
         因此能生成更精简、Gas 消耗更低的字节码（即 “更强大的优化”）
 3. npx hardhat test --build-profile production
+4. solidity test configuration
+    export default defineConfig({
+        test: {
+            solidity :{
+                isolate: true,
+                ffi: true,  // enable FFI cheatcode, which allows calling external programs from tests
+                allowInternalExpectRevert: true, // allow using expectRevert with internal functions
+                from: "0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38", // default sender address
+                txOrigin: "0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38", // default tx.origin
+                initalBalance: 0xffffffffffffffffffffffffffffffffffffffff, // default sender balance
+                blockGasLimit: 9_223_372_036_854_775_807 (i64::MAX), // default block gas limit
+                blockBasefeePerGas: 0, // default block base fee per gas
+                coinbase: 0x0000000000000000000000000000000000000000, // default coinbase address
+                blockTimestamp: 1,
+                blockGasLimit: 100000000,   // default block gas limit
+
+            }
+        }
+    })
+5. viem and node:test
+    1. setup:npm add --save-dev @nomicfoundation/hardhat-viem @nomicfoundation/hardhat-viem-assertions @nomicfoundation/hardhat-node-test-runner @nomicfoundation/hardhat-network-helpers viem
+    2. hardhat.config.ts
+        import hardhatViem from "@nomicfoundation/hardhat-viem";
+        import hardhatViemAssertions from "@nomicfoundation/hardhat-viem-assertions";
+        import hardhatNodeTestRunner from "@nomicfoundation/hardhat-node-test-runner";
+        import hardhatNetworkHelpers from "@nomicfoundation/hardhat-network-helpers";
+        export default defineConfig({
+            plugins: [
+                hardhatViem,
+                hardhatViemAssertions,
+                hardhatNodeTestRunner,
+                hardhatNetworkHelpers,
+                // ...other plugins...
+            ],
+            // ...other config...
+        });
+    3. npx hardhat build / Command Palette: TypeScript: Reload Project
+    

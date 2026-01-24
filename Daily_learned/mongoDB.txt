@@ -1,0 +1,47 @@
+1. 基本概念
+    1. document database，a document means a json record(binary JSON).
+        MongoBD             MySql
+        Collection          Table
+        document            Row
+        Field               column
+        index               index
+        _id                primary key
+        $lookup             join
+        $group              group by
+2. 安装
+    1. windows安装，mongodb.com， community。compass develop ui.
+3. 命令：
+    1. help
+    2. cls
+    3. show database
+    4. use database_name
+    5. show dbs
+    6. show collections
+    7. db.users.insertOne({name:'zhangsan',age:18})
+    8. db.users.find()
+    9. db.users.find({name:'zhangsan'})
+    10. db.users.find({name:'zhangsan',age:18})
+    11. db.users.find({name:'zhangsan',age:18}).pretty()
+    12. db.users.insertMany([{name:'zhangsan',age:18},{name:'lisi',age:20}])
+    13. db.users.find().count()
+    14. db.users.find().skip(1).limit(1)
+    15. db.users.find().sort({age:1})   // 1:升序，-1:降序
+    16. db.users.find().sort({age:1}).skip(1).limit(1)
+    17. db.users.find({level: 3}, {name:1, email:1, _id:0})  // 1:显示，0:隐藏 
+    18. db.users.find({name:{$regex:'^z', $options: 'i'}})  // 正则表达式, i:不区分大小写
+    19. db.users.find({level: {$gt: 3}})  // 大于 $lt:小于  $gte:大于等于  $lte:小于等于
+    20. db.users.find({level: {$in: [3, 4]}})  // in
+    21. db.users.find({level: {$nin: [3, 4]}})  // not in
+    22. db.users.find({email: {$exists: true}})  // field exists/1; false/0: not exists
+    23. db.users.find({level: {$gte:3, $lte: 5}})  // >=3 and <=5
+    24. db.users.find({$or: [{level: 3}, {age: 18}]})  // or
+    25. db.users.find({$and: [{level: 3}, {age: 18}]})  // and
+    26. db.users.find({$not: {level: 3}})  // not
+    27. db.users.countDocuments({level: {$gte: 3}})  // count >=3
+    28. db.users.findOne({level: {$gte: 3}})  // find one >=3
+    29. db.users.updateOne({name: 'zhangsan'}, {$set: {age: 20}})  // update one
+    30. db.users.updateMany({level: {$gte: 3}}, {$set: {age: 20}})  // update many
+    31. db.users.deleteOne({name: 'zhangsan'})  // delete one
+    32. db.users.deleteMany({level: {$gte: 3}})  // delete many
+    33. db.users.find().forEach(function(doc){print(doc.name)})  // print all name
+

@@ -1,0 +1,24 @@
+1. Dockerfile文件，没有扩展名
+    FROM node:14-alpine
+    COPY source dest    index.js  /index.js
+    CMD ["node", "index.js"]
+2. docker build -t hello-docker .       // .表示当前目录
+3. docker images    // 查看镜像
+4. docker run hello-docker    // 运行镜像
+5. docker ps    // 查看运行中的容器
+6. docker ps -a    // 查看所有容器
+7. docker stop container-id    // 停止容器
+8. docker rm container-id    // 删除容器
+9. docker rmi image-id    // 删除镜像
+10. docker run -p 8080:8080 hello-docker    // 端口映射
+11. docker run -d hello-docker    // 后台运行
+12. docker run -it hello-docker    // 交互式运行
+13. docker exec -it container-id /bin/sh    // 进入容器
+14. labs.play-with-docker.com    // 在线练习docker
+15. Docker Desktop
+    1. Containers
+    2. Images
+16. Volumns: 逻辑卷，用于持久化数据，docker containers中数据不会持久化，containers停止后，数据丢失。
+    1. docker run -v /data -p 8080:8080 hello-docker    // 挂载本地目录到容器中
+    2. docker run -v /data:/data -p 8080:8080 hello-docker    // 挂载本地目录到容器中，并指定容器中目录名称
+17. Docker Compose: 用于定义和运行多容器Docker应用程序的工具
